@@ -5,9 +5,9 @@ import { useState, type SyntheticEvent } from 'react'
 
 
 interface IDestinationProps<OriginOption, DestinationOption> extends Omit<AutocompleteSearchProps<OriginOption>, 'onChange' | 'multiple' | 'options' | 'group' | 'onSearch'> {
-	originLabel?: keyof OriginOption,
+	originLabel: keyof OriginOption,
 	originGroup?: keyof OriginOption,
-	destinationLabel?: keyof DestinationOption,
+	destinationLabel: keyof DestinationOption,
 	destinationGroup?: keyof DestinationOption,
 	orientation?: 'horizontal' | 'vertical',
 	spacing?: number,

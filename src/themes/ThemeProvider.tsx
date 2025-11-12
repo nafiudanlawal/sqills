@@ -1,13 +1,20 @@
 import { useMemo, useState, type ReactNode } from "react"
 import { createTheme, ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
-import { CssBaseline, FormControlLabel, Switch } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import palettes from "./palettes";
 import spacing from "./spacing";
+import { ThemeContext } from "./context";
+import type { mode } from "./types";
 
-type mode = "light" | "dark";
+
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
 	const [mode, setMode] = useState<mode>("light");
+
+	const changeMode = (mode: mode) => {
+		console.log("change mode", mode)
+		setMode(mode);
+	}
 	const memoizedValue = useMemo(() => ({
 		palette: {
 			mode,
@@ -15,16 +22,18 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
 		},
 		spacing
 	}), [mode]);
-
+	console.log({mode})
 
 	const theme = createTheme(memoizedValue);
 
 	return (
-		<MUIThemeProvider theme={theme}>
-			<CssBaseline />
-			<FormControlLabel label="Theme Mode" control={<Switch value={mode == "light"} onChange={evt => setMode(evt.target.checked ? "dark": "light")} />} />
-			{children}
-		</MUIThemeProvider>
+		<ThemeContext value={{ mode, changeMode }}>
+			<MUIThemeProvider theme={theme}>
+				<CssBaseline />
+				{children}
+			</MUIThemeProvider>
+		</ThemeContext>
+		
 	)
 }
 
