@@ -15,7 +15,8 @@
     "@mui/material": "^7.3.5",
     "autosuggest-highlight": "^3.3.4",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-window": "^2.2.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

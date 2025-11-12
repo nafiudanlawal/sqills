@@ -156,7 +156,6 @@ function AutocompleteSearch<Option, Multiple extends boolean | undefined = false
 		size: size
 
 	}
-	console.log({value, options})
 
 	useEffect(() => {
 		searchHandler(textfieldValue);
