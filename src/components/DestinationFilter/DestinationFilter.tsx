@@ -1,7 +1,7 @@
 import { FormControlLabel, Stack, Switch, type SxProps } from '@mui/material'
+import type { AutocompleteSearchProps } from '../AutocompleteSearch/AutocompleteSearch'
+import AutocompleteSearch from '../AutocompleteSearch/AutocompleteSearch'
 import { useState, type SyntheticEvent } from 'react'
-import type { AutocompleteSearchProps } from '../AutocompleteSearch/AutocompleteSearch';
-import AutocompleteSearch from '../AutocompleteSearch/AutocompleteSearch';
 
 
 interface IDestinationProps<OriginOption, DestinationOption> extends Omit<AutocompleteSearchProps<OriginOption>, 'onChange' | 'multiple' | 'options' | 'group' | 'onSearch'> {
@@ -78,6 +78,7 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 	}
 
 	const onDestinationChangeInternal = (event: SyntheticEvent, value: DestinationOption | DestinationOption[] | null) => {
+		console.log("Destination changed:", value);
 		if (onDestinationChange) {
 			onDestinationChange(event, value);
 		}
@@ -104,7 +105,7 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 				delay={delay}
 			/>
 			<AutocompleteSearch
-				id={`origin-autocomplete${destinationId}`}
+				id={`destination-autocomplete${destinationId}`}
 				multiple
 				options={destinationOptions}
 				onSearch={mirror ? normalizedSearch : onDestinationSearch}
@@ -120,7 +121,6 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 				delay={delay}
 			/>
 			<FormControlLabel
-				required
 				control={<Switch checked={mirror} onChange={handleChange} slotProps={{ input: { 'aria-label': 'controlled' } }} />}
 				label="Mirror"
 			/>

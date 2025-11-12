@@ -185,11 +185,11 @@ function AutocompleteSearch<Option, Multiple extends boolean | undefined = false
 	onSearch,
 }: AutocompleteSearchProps<Option, Multiple>): React.ReactNode {
 	const [open, setOpen] = React.useState(false);
-	const [selectOptions, setSelectOptions] = React.useState<Option[]>(options);
+	const [selectOptions, setSelectOptions] = React.useState<Option[]>(!onSearch ? options : []);
 	const [loading, setLoading] = React.useState(false);
 
-	const [valueSingle, setValueSingle] = React.useState<Option | null>(value as Option | null);
-	const [valueMultiple, setValueMultiple] = React.useState<Option[]>((value as Option[]) || []);
+	const [valueSingle, setValueSingle] = React.useState<Option | null>(!multiple ? value as Option : null);
+	const [valueMultiple, setValueMultiple] = React.useState<Option[]>(multiple ? value as Option[] : []);
 
 	const [textfieldValue, setTextfieldValue] = React.useState("");
 
@@ -245,7 +245,7 @@ function AutocompleteSearch<Option, Multiple extends boolean | undefined = false
 			}
 		}
 	};
-	let props: AutocompleteProps<Option, Multiple, false, false> = {
+	let props: AutocompleteProps<Option, Multiple, false, false> & { "data-testid": string } = {
 		multiple: multiple as Multiple,
 		filterOptions: onSearch ? (x: Option[]) => x : undefined,
 		open,
@@ -274,6 +274,7 @@ function AutocompleteSearch<Option, Multiple extends boolean | undefined = false
 		autoComplete: true,
 		getOptionLabel: (option: Option) => String(option[label]),
 		id: id,
+		"data-testid": `autocomplete-${id}`,
 		renderInput: (params: AutocompleteRenderInputParams) => (
 			<TextField {...params} {...textfieldProps} data-testid={`textfield-${id}`} id={`textfield-${id}`} />
 		),
@@ -332,18 +333,10 @@ function AutocompleteSearch<Option, Multiple extends boolean | undefined = false
 	}
 	React.useEffect(() => {
 		searchHandler(textfieldValue);
-		if (!onSearch) {
-			setSelectOptions(options || []);
-		}
-		if (multiple) {
-			setValueMultiple((value as Option[]) || []);
-		} else {
-			setValueSingle((value as Option | null) || null);
-		}
 		return () => {
 			searchHandler.clear();
 		};
-	}, [searchHandler, textfieldValue, options, onSearch, multiple, value]);
+	}, [searchHandler, textfieldValue]);
 
 	return <Autocomplete {...props} />;
 }
