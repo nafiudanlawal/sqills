@@ -78,7 +78,6 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 	}
 
 	const onDestinationChangeInternal = (event: SyntheticEvent, value: DestinationOption | DestinationOption[] | null) => {
-		console.log("Destination changed:", value);
 		if (onDestinationChange) {
 			onDestinationChange(event, value);
 		}
