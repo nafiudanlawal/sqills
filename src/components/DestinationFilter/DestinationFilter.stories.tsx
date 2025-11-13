@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { fn } from 'storybook/test';
 
+import { sleep } from '../../utils';
 import DestinationFilter from './DestinationFilter';
 
 const sampleOptions = [{
@@ -47,7 +48,17 @@ const sampleOptions = [{
 }];
 
 type Option = typeof sampleOptions[0];
+const searchFunc1 = async (query: string) => { // simulate async loading func
+	console.log("search 1");
+	await sleep(500);
+	return sampleOptions.filter(option => new RegExp(query, "i").test(option.model)).slice(0, 10);
 
+}
+
+const searchFunc2 = async (query: string) => { // simulate async loading func
+	await sleep(500);
+	return sampleOptions.filter(option => new RegExp(query, "i").test(option.model)).slice(5, 18);
+}
 
 export default {
 	title: 'Components/DestinationFilter',
@@ -56,15 +67,15 @@ export default {
 	parameters: {
 		layout: 'centered',
 	},
-	args: { onOriginChange: fn(), onDestinationChange: fn(), size: 'medium', delay: 200, origins: [], destinations: [] },
+	args: { onOriginChange: fn(), onDestinationChange: fn(), onSwitchChange: fn(), size: 'medium', delay: 200, origins: [], destinations: [] },
 	argTypes: {
-		originGroup: { description: "property of option to group by", control: "select", options: [...Object.keys(sampleOptions[0]), undefined] },
-		destinationGroup: { description: "property of option to group by", control: "select", options: [...Object.keys(sampleOptions[0]), undefined] },
-		delay: { description: "debounce delay in milliseconds", defaultValue: 200, control:"number" },
-		onOriginSearch: { description: "async function to fetch options based on search query" },
-		onDestinationSearch: { description: "async function to fetch options based on search query" },
-		multiple: { description: "allow multiple selections", control:"boolean" },
-		size: { description: "size of the autocomplete input" },
+		originGroup: { description: "Property of option to group by", control: "select", options: Object.keys(sampleOptions[0]) },
+		destinationGroup: { description: "Property of option to group by", control: "select", options: Object.keys(sampleOptions[0]) },
+		delay: { description: "Delay search handler in milliseconds", defaultValue: 200, control: "number" },
+		onOriginSearch: { description: "Fetch options based on search query" },
+		onDestinationSearch: { description: "Fetch options based on search query" },
+		multiple: { description: "Allow multiple selections", control: "boolean" },
+		size: { description: "Size of the autocomplete input", control: "radio", options: ["small", "medium"] },
 
 	},
 } satisfies Meta<typeof DestinationFilter<Option, Option>>;
@@ -79,18 +90,27 @@ export const Default: Story = {
 		originLabel: "model",
 		destinationLabel: "model",
 		delay: 200,
-		label: "model",
 		size: 'medium',
 	},
 };
 
 export const GroupedOptions: Story = {
+	...Default,
 	args: {
-		origins: sampleOptions.slice(0, 10),
-		destinations: sampleOptions.slice(5),
+		...Default.args,
 		originGroup: "brand",
 		destinationGroup: "brand",
-		originLabel: "model",
-		destinationLabel: "model"
-	}
+	},
+	
+};
+
+export const OnSearch: Story = {
+	...Default,
+	args: {
+		...Default.args,
+		origins: [],
+		destinations: [],
+		onOriginSearch: searchFunc1,
+		onDestinationSearch: searchFunc2,
+	},
 };

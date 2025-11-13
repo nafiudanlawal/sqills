@@ -61,8 +61,8 @@ export default {
 		options: { description: "array of options to display" },
 		label: { description: "property of option to display as label", control: "select", options: Object.keys(sampleOptions[0]) },
 		onChange: { description: "handles change event", action: 'changed' },
-		group: { description: "property of option to group by", control: "select", options: [...Object.keys(sampleOptions[0]), undefined] },
-		delay: { description: "debounce delay in milliseconds", defaultValue: 200, control: "number" },
+		group: { description: "property of option to group by", control: "select", options: Object.keys(sampleOptions[0]) },
+		delay: { description: "Delay search handler in milliseconds", defaultValue: 200, control: "number" },
 		onSearch: { description: "async function to fetch options based on search query" },
 		multiple: { description: "allow multiple selections", control: "boolean" },
 		size: { description: "size of the autocomplete input", control: "radio", options: ["small", "medium"] },
@@ -75,7 +75,7 @@ type Story = StoryObj<typeof AutocompleteSearch<Option>>;
 
 export const Default: Story = {
 	args: {
-		options: sampleOptions.slice(0, 10),
+		options: sampleOptions,
 		delay: 200,
 		label: "model",
 		size: 'medium',
@@ -83,37 +83,45 @@ export const Default: Story = {
 };
 
 export const MultipleSelection: Story = {
+	...Default,
 	args: {
-		options: sampleOptions.slice(0, 10),
-		delay: 200,
+		...Default.args,
 		multiple: true as false,
-		label: "model"
 	}
 };
 
 export const GroupedOptions: Story = {
+	...Default,
 	args: {
+		...Default.args,
 		options: sampleOptions,
 		group: "brand",
-		label: "model"
 	}
 };
 
-export const onSearch: Story = {
+export const onSearchWithDelay: Story = {
+	...Default,
 	args: {
-		delay: 200,
-		label: "model",
-		size: 'medium',
+		...Default.args,
+		delay: 500,
 		onSearch: searchFunc
+	},
+};
+
+export const SmallTextField: Story = {
+	...Default,
+	args: {
+		...Default.args,
+		size: "small",
 	},
 };
 
 const fieldId = "random-id"
 export const HighlightMatching: Story = {
+	...Default,
 	args: {
-		options: sampleOptions,
+		...Default.args,
 		id: fieldId,
-		label: "model",
 	},
 	play: async ({ canvasElement, userEvent }) => {
 		const canvas = within(canvasElement);
@@ -124,9 +132,9 @@ export const HighlightMatching: Story = {
 };
 
 export const Virtualized: Story = {
+	...Default,
 	args: {
-		options: sampleOptions,
-		label: "model",
+		...Default.args,
 		virtualize: true
 	}
 };

@@ -12,7 +12,6 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
 	const [mode, setMode] = useState<mode>("light");
 
 	const changeMode = (mode: mode) => {
-		console.log("change mode", mode)
 		setMode(mode);
 	}
 	const memoizedValue = useMemo(() => ({
@@ -22,7 +21,6 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
 		},
 		spacing
 	}), [mode]);
-	console.log({mode})
 
 	const theme = createTheme(memoizedValue);
 

@@ -1,27 +1,8 @@
-import { FormControlLabel, Stack, Switch, type SxProps } from '@mui/material'
-import type { AutocompleteSearchProps } from '../AutocompleteSearch/AutocompleteSearch'
-import AutocompleteSearch from '../AutocompleteSearch/AutocompleteSearch'
-import { useState, type SyntheticEvent } from 'react'
+import { FormControlLabel, Stack, Switch } from '@mui/material'
+import { useEffect, useState, type SyntheticEvent } from 'react'
+import { AutocompleteSearch } from '../AutocompleteSearch';
+import type { DestinationFilterProps } from './types';
 
-
-interface IDestinationProps<OriginOption, DestinationOption> extends Omit<AutocompleteSearchProps<OriginOption>, 'onChange' | 'multiple' | 'options' | 'group' | 'onSearch'> {
-	originLabel: keyof OriginOption,
-	originGroup?: keyof OriginOption,
-	destinationLabel: keyof DestinationOption,
-	destinationGroup?: keyof DestinationOption,
-	orientation?: 'horizontal' | 'vertical',
-	spacing?: number,
-	containerSx?: SxProps,
-	multiple?: boolean,
-	origins: OriginOption[],
-	destinations: DestinationOption[],
-	originId?: string,
-	destinationId?: string,
-	onOriginSearch?: (query: string) => Promise<OriginOption[]>,
-	onDestinationSearch?: (query: string) => Promise<DestinationOption[]>,
-	onOriginChange?: (event: SyntheticEvent, value: OriginOption | OriginOption[] | null) => void,
-	onDestinationChange?: (event: SyntheticEvent, value: DestinationOption | DestinationOption[] | null) => void,
-}
 
 
 export default function DestinationFilter<OriginOption, DestinationOption>({
@@ -35,9 +16,20 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 	onDestinationChange,
 	onOriginSearch,
 	onDestinationSearch,
+	onSwitchChange,
 	containerSx = {
 		alignItems: "center",
 		justifyContent: "center",
+	},
+	destinationTextfieldProps = {
+		placeholder: "Destination",
+		label: "Destination",
+		title: "Destination"
+	},
+	originTextfieldProps = {
+		placeholder: "Origin",
+		label: "Origin",
+		title: "Origin"
 	},
 	originId = originLabel as string,
 	destinationId = destinationLabel as string,
@@ -46,14 +38,14 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 	originGroup,
 	destinationGroup,
 	...otherProps
-}: IDestinationProps<OriginOption, DestinationOption>) {
+}: DestinationFilterProps<OriginOption, DestinationOption>) {
 
 	const [mirror, setMirror] = useState<boolean>(false);
-	const [originValue, setOriginValue] = useState<OriginOption[] | undefined>();
-	const [destinationValue, setDestinationValue] = useState<DestinationOption[] | undefined>();
+	const [originValue, setOriginValue] = useState<OriginOption[] | undefined>([]);
+	const [destinationValue, setDestinationValue] = useState<DestinationOption[] | undefined>([]);
 	const [destinationOptions, setDestinationOptions] = useState<DestinationOption[]>(destinations)
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.checked) {
 			setDestinationOptions(origins as unknown as DestinationOption[]);
 			setDestinationValue([]);
@@ -61,9 +53,13 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 			setDestinationOptions(destinations);
 			setDestinationValue([]);
 		}
+		if (onSwitchChange) {
+			onSwitchChange(event);
+		}
 		setMirror(event.target.checked);
 	};
 	const normalizedSearch = async (query: string) => {
+		console.log("normalize search")
 		if (onOriginSearch) {
 			const result = onOriginSearch(query);
 			return result as unknown as Promise<DestinationOption[]>
@@ -84,7 +80,13 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 		}
 		setDestinationValue(value as DestinationOption[]);
 	}
+	useEffect(() => {
+		if (mirror) {
+			setDestinationOptions(origins as unknown as DestinationOption[])
+		}
+	}, [mirror])
 
+	console.log("mirror destination", destinationOptions)
 	return (
 		<Stack sx={containerSx} spacing={spacing} direction={orientation === 'horizontal' ? 'row' : 'column'}>
 			<AutocompleteSearch
@@ -95,33 +97,26 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 				onSearch={onOriginSearch}
 				onChange={onOriginChangeInternal}
 				value={originValue}
-				label={originLabel as keyof OriginOption}
+				label={originLabel}
 				group={originGroup}
-				textfieldProps={{
-					placeholder: "Origin",
-					label: "Origin",
-					title: "Origin"
-				}}
+				textfieldProps={originTextfieldProps}
 				delay={delay}
 			/>
 			<AutocompleteSearch
+				{...otherProps}
 				id={`destination-autocomplete${destinationId}`}
 				multiple
 				options={destinationOptions}
-				onSearch={mirror ? normalizedSearch : onDestinationSearch}
-				label={destinationLabel as keyof DestinationOption}
+				onSearch={mirror && onDestinationSearch ? normalizedSearch : onDestinationSearch}
+				label={destinationLabel}
 				group={destinationGroup}
 				onChange={onDestinationChangeInternal}
 				value={destinationValue}
-				textfieldProps={{
-					placeholder: "Destination",
-					label: "Destination",
-					title: "Destination"
-				}}
+				textfieldProps={destinationTextfieldProps}
 				delay={delay}
 			/>
 			<FormControlLabel
-				control={<Switch checked={mirror} onChange={handleChange} slotProps={{ input: { 'aria-label': 'controlled' } }} />}
+				control={<Switch checked={mirror} onChange={handleSwitchChange} slotProps={{ input: { 'aria-label': 'controlled' } }} />}
 				label="Mirror"
 			/>
 		</Stack>

@@ -1,17 +1,44 @@
-# React + TypeScript + Vite
+# Sqills Frontent Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is React component library using React, TypeScript, and Material UI (MUI).
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Architecture
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+## Features
+- ThemeProvider
+- AutocompleteSearch
+- DestinationFilter
+
+
+
+## Requiremnts
+- NodeJS v20+
+- npm 9.0+
+- terminal access
+
+## Getting Started
+
+### Install Packages
+
+From the project directory
+
+```npm install```
+
+### RUNNING PROJECT
+
+- Dev Server &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;```npm run dev```
+
+- Components Docs &nbsp; ```npm run storybook``` 
+
+- Build Prod Packages &nbsp;```npm run build```
+
+
+
+-----------------------
+# Expanding the ESLint configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
