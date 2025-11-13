@@ -3,8 +3,8 @@ import AutocompleteSearch from './components/AutocompleteSearch/AutocompleteSear
 import DestinationFilter from './components/DestinationFilter/DestinationFilter';
 import { Container, FormControlLabel, Paper, Stack, Switch } from '@mui/material';
 import { sleep } from './utils';
-import { ThemeContext } from './themes/context';
 import top100Films from './fakeData';
+import { ThemeContext } from './themes';
 
 function Child() {
 

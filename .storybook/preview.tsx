@@ -1,8 +1,7 @@
-import { createTheme, ThemeProvider } from '@mui/material';
-import type { Preview } from '@storybook/react-vite'
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import type { Preview } from '@storybook/react-vite';
 
-import palettes from "../src/themes/palettes"
-import spacing from "../src/themes/spacing"
+import { palettes, spacing } from "../src/themes";
 
 const preview: Preview = {
   parameters: {
@@ -18,7 +17,7 @@ const preview: Preview = {
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
       test: 'todo'
-    }
+    },
   },
   decorators: [
     (Story, context) => {
@@ -33,6 +32,7 @@ const preview: Preview = {
 
       return (
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <Story />
         </ThemeProvider>
       )
@@ -44,12 +44,15 @@ const preview: Preview = {
       description: "Select light mode or dark mode",
       defaultValue: "light",
       toolbar: {
-        icon: "mirror",
-        items: ["light", "dark"],
+        icon: "circlehollow",
+        items: [{ value: "light", icon: "sun", title: "Light mode" }, { value: "dark", icon: "moon", title: "Dark Mode" }],
         dynamic: true,
       }
     }
-  }
+  },
+  initialGlobals: {
+    scheme: 'light',
+  },
 };
 
 export default preview;

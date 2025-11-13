@@ -52,6 +52,7 @@ const searchFunc = async (query: string) => { // simulate async loading func
 export default {
 	title: 'Components/AutoCompleteSearch',
 	component: AutocompleteSearch,
+	
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',

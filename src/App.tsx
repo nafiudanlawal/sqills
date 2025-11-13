@@ -1,6 +1,6 @@
 import './App.css'
-import ThemeProvider from './themes/ThemeProvider'
 import Child from './Child';
+import { ThemeProvider } from './themes';
 
 function App() {
   return (
