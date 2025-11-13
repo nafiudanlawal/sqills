@@ -8,6 +8,8 @@ This React component library is built for developer experience and type safety, 
 
 The library's architecture is designed for reusability and modularity. This is furture enhanced with centralized exports through index.ts files. The porject structure puts related components in the same folder.
 
+The Components are flexible to developer changes. With the DestinationFilter, in order to ensure selected option consistency, the destinations selections are cleared when the mirror toggle changes.
+
 
 ## Features
 - ThemeProvider
