@@ -49,7 +49,6 @@ const sampleOptions = [{
 
 type Option = typeof sampleOptions[0];
 const searchFunc1 = async (query: string) => { // simulate async loading func
-	console.log("search 1");
 	await sleep(500);
 	return sampleOptions.filter(option => new RegExp(query, "i").test(option.model)).slice(0, 10);
 

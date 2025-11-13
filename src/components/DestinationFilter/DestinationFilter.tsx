@@ -59,7 +59,6 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 		setMirror(event.target.checked);
 	};
 	const normalizedSearch = async (query: string) => {
-		console.log("normalize search")
 		if (onOriginSearch) {
 			const result = onOriginSearch(query);
 			return result as unknown as Promise<DestinationOption[]>
@@ -74,7 +73,6 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 	}
 
 	const onDestinationChangeInternal = (event: SyntheticEvent, value: DestinationOption | DestinationOption[] | null) => {
-		console.log("Destination changed:", value);
 		if (onDestinationChange) {
 			onDestinationChange(event, value);
 		}
@@ -86,7 +84,6 @@ export default function DestinationFilter<OriginOption, DestinationOption>({
 		}
 	}, [mirror])
 
-	console.log("mirror destination", destinationOptions)
 	return (
 		<Stack sx={containerSx} spacing={spacing} direction={orientation === 'horizontal' ? 'row' : 'column'}>
 			<AutocompleteSearch

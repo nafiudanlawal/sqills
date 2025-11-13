@@ -3,8 +3,10 @@
 This project is React component library using React, TypeScript, and Material UI (MUI).
 
 
-### Architecture
+## Architecture Notes
+This React component library is built for developer experience and type safety, leveraging the toolchain of Vite for fast development and TypeScript. The development experience is further enhanced with Storybook, which provides an isolated environment for visual testing and documentation. Theming is built on MUI's ThemeProvider, utilizing a shared theme package that defines consistent light and dark mode palettes. 
 
+The library's architecture is designed for reusability and modularity. This is furture enhanced with centralized exports through index.ts files. The porject structure puts related components in the same folder.
 
 
 ## Features
@@ -38,63 +40,16 @@ From the project directory
 
 
 -----------------------
-# Expanding the ESLint configuration
+# More Information on Dev Environment
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+[Vite React TypeScript](https://vite.dev/guide/)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Author
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Nafiu Lawal 
+- [Github](https://www.github.com/nafiudanlawal)
+- [LinkedIn](https://www.linkedin.com/in/nafiudanlawal)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## License
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+[MIT](https://choosealicense.com/licenses/mit/)

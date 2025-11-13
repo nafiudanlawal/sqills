@@ -9,15 +9,12 @@ import top100Films from './fakeData';
 function Child() {
 
 	const handleSearch = useCallback(async (query: string) => {
-		console.log("main search")
-
 		await sleep(500);
 		const result = top100Films.filter(option => new RegExp(query, "i").test(option.title)).slice(0, 20);
 		return result;
 	}, [])
 
 	const handleSearchAlt = useCallback(async (query: string) => {
-		console.log("alt search")
 		await sleep(500);
 		const result = top100Films.slice(20).filter(option => new RegExp(query, "i").test(option.title)).slice(0, 20);
 		return result;
